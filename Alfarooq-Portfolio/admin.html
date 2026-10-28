@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>إدارة الأعمال | علي بن محمد آل رحمة</title>
+<meta name="robots" content="noindex" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700;900&family=IBM+Plex+Sans+Arabic:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+  .adm{padding:26px 0 60px}
+  .adm-top{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;padding-bottom:16px;border-bottom:1px solid var(--line);margin-bottom:22px}
+  .adm-top h1{font-family:var(--display);font-size:22px;font-weight:900;margin:0}
+  .adm-top .sub{font-size:12.5px;color:var(--mute)}
+  .back{font-size:13px;font-weight:600;color:var(--gold-hi);text-decoration:none;border:1px solid var(--line);padding:8px 16px;border-radius:10px;transition:.2s}
+  .back:hover{background:rgba(201,164,92,.12);border-color:var(--gold)}
+  .layout{display:grid;grid-template-columns:290px 1fr;gap:22px;align-items:start}
+  .card{border:1px solid var(--line);border-radius:16px;background:linear-gradient(180deg,rgba(16,37,67,.72),rgba(8,18,34,.9));padding:18px}
+  .card h2{font-family:var(--display);font-size:15px;font-weight:900;color:var(--gold-hi);margin-bottom:14px}
+  .hint{font-size:12px;color:var(--mute);line-height:1.9}
+  .hint b{color:var(--gold-hi)}
+  ol.list{list-style:none;display:flex;flex-direction:column;gap:7px;margin-bottom:14px}
+  ol.list li{display:flex;align-items:center;gap:8px;padding:9px 11px;border:1px solid var(--line);border-radius:11px;background:rgba(255,255,255,.03);cursor:pointer;transition:.18s}
+  ol.list li:hover{border-color:var(--gold)}
+  ol.list li.on{border-color:var(--gold-hi);background:rgba(201,164,92,.16);box-shadow:0 0 0 1px var(--gold) inset}
+  ol.list .t{flex:1;min-width:0;font-size:13px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  ol.list .n{font-size:11px;color:var(--mute);font-family:var(--serif);min-width:18px}
+  .mini{border:1px solid var(--line);background:transparent;color:var(--mute);width:26px;height:26px;border-radius:7px;cursor:pointer;font-size:13px;line-height:1;transition:.18s;flex:none}
+  .mini:hover{color:#fff;border-color:var(--gold);background:rgba(201,164,92,.15)}
+  .mini.del:hover{color:#ffd9d9;border-color:#b04a4a;background:rgba(176,74,74,.2)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .field{margin-bottom:14px}
+  .field label{display:block;font-size:12.5px;font-weight:700;color:var(--gold-hi);margin-bottom:6px}
+  .field small{display:block;font-size:11px;color:#7f8ea6;margin-top:4px}
+  input[type=text],input[type=url],textarea{width:100%;font:400 13.5px var(--ui);color:#fff;background:rgba(5,12,23,.7);
+    border:1px solid var(--line);border-radius:10px;padding:11px 13px;transition:.18s;line-height:1.8}
+  input:focus,textarea:focus{outline:none;border-color:var(--gold);background:rgba(5,12,23,.95);box-shadow:0 0 0 3px rgba(201,164,92,.13)}
+  textarea{resize:vertical;min-height:76px}
+  textarea.tall{min-height:190px}
+  .bar{display:flex;gap:9px;flex-wrap:wrap;margin-top:6px}
+  .b{font:700 13px var(--display);padding:11px 18px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--ivory);cursor:pointer;transition:.2s}
+  .b:hover{border-color:var(--gold);background:rgba(201,164,92,.14)}
+  .b.gold{background:linear-gradient(135deg,var(--gold-hi),var(--gold));color:#0a1424;border-color:transparent}
+  .b.gold:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(201,164,92,.35)}
+  .b.danger{color:#ffc9c9;border-color:rgba(176,74,74,.4)}
+  .b.danger:hover{background:rgba(176,74,74,.2);border-color:#b04a4a}
+  .prevwrap{margin-top:22px}
+  .prevhead{font-size:12.5px;color:var(--mute);margin-bottom:10px;font-weight:600}
+  #toast{position:fixed;inset-inline-end:20px;bottom:20px;z-index:99;background:#0f2740;border:1px solid var(--gold);color:#fff;
+    padding:13px 20px;border-radius:12px;font-size:13.5px;font-weight:600;box-shadow:0 14px 34px rgba(0,0,0,.5);
+    opacity:0;transform:translateY(14px);transition:.3s;pointer-events:none}
+  #toast.show{opacity:1;transform:none}
+  .steps{counter-reset:s;display:grid;gap:9px;margin:0;padding:0;list-style:none}
+  .steps li{counter-increment:s;position:relative;padding-inline-start:30px;font-size:12.5px;color:var(--mute);line-height:1.8}
+  .steps li::before{content:counter(s);position:absolute;inset-inline-start:0;top:2px;width:21px;height:21px;border-radius:50%;
+    display:grid;place-items:center;background:rgba(201,164,92,.16);border:1px solid var(--line);color:var(--gold-hi);font-size:11px;font-weight:700}
+  .steps b{color:#fff}
+  /* ===== بوابة الدخول ===== */
+  #gate{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:22px;
+    background:radial-gradient(120% 80% at 50% 0%,#12253f 0%,#050c17 62%)}
+  #gate.gone{display:none}
+  .gate-card{width:100%;max-width:396px;border:1px solid var(--line);border-radius:18px;padding:28px 26px;text-align:center;
+    background:linear-gradient(180deg,rgba(16,37,67,.92),rgba(8,18,34,.97));box-shadow:0 30px 70px rgba(0,0,0,.6)}
+  .gate-lock{width:56px;height:56px;margin:0 auto 14px;border-radius:50%;display:grid;place-items:center;
+    border:2px solid var(--gold);background:radial-gradient(circle at 34% 26%,rgba(236,217,166,.22),transparent 46%),#0a1a30}
+  .gate-lock svg{width:24px;height:24px;stroke:var(--gold-hi);fill:none;stroke-width:1.7}
+  .gate-card h1{font-family:var(--display);font-size:19px;font-weight:900;color:#fff;margin-bottom:4px}
+  .gsub{font-size:12.5px;color:var(--mute);margin-bottom:20px}
+  .gate-card .field{text-align:start}
+  #gateErr{display:none;margin-bottom:14px;padding:9px 12px;border-radius:9px;font-size:12.5px;font-weight:600;text-align:start;
+    border:1px solid rgba(176,74,74,.5);background:rgba(176,74,74,.14);color:#ffd7d7}
+  #gateErr.show{display:block}
+  .gate-card .b{width:100%}
+  .gate-note{margin-top:16px;font-size:11px;color:#6f7f96;line-height:1.7}
+  @media (max-width:900px){.layout{grid-template-columns:1fr}.grid2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <form class="gate-card" id="gateForm" autocomplete="off">
+    <div class="gate-lock"><svg viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg></div>
+    <h1>دخول مدير الموقع</h1>
+    <div class="gsub">هذه الصفحة مخصّصة لتعديل الأعمال والمشاريع</div>
+    <div id="gateErr">البريد الإلكتروني أو كلمة المرور غير صحيحة.</div>
+    <div class="field">
+      <label for="gEmail">البريد الإلكتروني</label>
+      <input type="email" id="gEmail" placeholder="name@example.com" autocomplete="username" required>
+    </div>
+    <div class="field">
+      <label for="gPass">كلمة المرور</label>
+      <input type="password" id="gPass" placeholder="••••••••" autocomplete="current-password" required>
+    </div>
+    <button class="b gold" type="submit">دخول</button>
+    <div class="gate-note">هذه الحماية تمنع العبث بالصفحة من مستخدم عادي، لكنها لا تُخفي البيانات عن من يجيد قراءة كود المتصفح.</div>
+  </form>
+</div>
+
+<nav>
+  <div class="nav-inner">
+    <div class="brand">لوحة إدارة الموقع<span>تعديل وإضافة الأعمال والمشاريع</span></div>
+    <div class="nav-links"><a href="index.html#works">→ عرض الموقع</a></div>
+  </div>
+</nav>
+
+<main class="wrap adm">
+  <div class="adm-top">
+    <div>
+      <h1>إدارة الأعمال والمشاريع</h1>
+      <div class="sub">عدّل هنا، ثم نزّل ملف <b style="color:var(--gold-hi)">works.js</b> واستبدله داخل مجلد <b style="color:var(--gold-hi)">assets</b> واعمل نشر من جديد.</div>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+      <span class="hint" style="font-size:11.5px">أنت داخل كـ <b id="whoami">مدير</b></span>
+      <a class="back" href="index.html#works">رجوع إلى الموقع</a>
+      <button class="back" type="button" id="logoutBtn">خروج</button>
+    </div>
+  </div>
+
+  <div class="layout">
+
+    <aside class="card">
+      <h2>قائمة الأعمال</h2>
+      <ol class="list" id="list"></ol>
+      <div class="bar">
+        <button class="b gold" id="addBtn">＋ إضافة عمل جديد</button>
+      </div>
+      <hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
+      <h2>كيف أنشر التعديلات؟</h2>
+      <ol class="steps">
+        <li><b>احفظ المسودة</b> — تُخزَّن في متصفحك فقط ولا تضيع عند الإغلاق.</li>
+        <li><b>نزّل works.js</b> — ملف البيانات الجاهز.</li>
+        <li><b>استبدل</b> ملف <span class="url">assets/works.js</span> في مجلد الموقع بالملف الجديد.</li>
+        <li><b>أعد النشر</b> على Vercel — يظهر التعديل للجميع.</li>
+      </ol>
+      <p class="hint" style="margin-top:14px">هذه الصفحة تعمل محليًا في متصفحك؛ لا يمكن لأي زائر تغيير موقعك من خلالها، لأنها لا تصل إلى السيرفر.</p>
+    </aside>
+
+    <section>
+      <div class="card">
+        <h2 id="formTitle">تفاصيل العمل</h2>
+
+        <div class="field">
+          <label for="f_title">اسم العمل</label>
+          <input type="text" id="f_title" placeholder="مثال: منصّة أفق الفاروق">
+        </div>
+
+        <div class="field">
+          <label for="f_tagline">الوصف المختصر (سطر واحد تحت الاسم)</label>
+          <input type="text" id="f_tagline" placeholder="مثال: المرشد الأكاديمي الرقمي لطالب الصف العاشر حتى الثاني عشر">
+        </div>
+
+        <div class="field">
+          <label for="f_desc">الوصف التفصيلي</label>
+          <textarea class="tall" id="f_desc" placeholder="اكتب فقرات الوصف…"></textarea>
+          <small>اترك سطرًا فارغًا بين الفقرات. ضع نجمتين حول أي كلمة لتصبح <b style="color:var(--gold-hi)">بارزة بالذهبي</b>: <span class="url">**كلمة**</span></small>
+        </div>
+
+        <div class="field">
+          <label for="f_chips">الميزات (سِم/بطاقة لكل سطر)</label>
+          <textarea id="f_chips" placeholder="مسارات جامعية&#10;حاسبة المعدل&#10;نظام XP"></textarea>
+        </div>
+
+        <div class="grid2">
+          <div class="field">
+            <label for="f_url">رابط الموقع</label>
+            <input type="url" id="f_url" placeholder="https://...">
+          </div>
+          <div class="field">
+            <label for="f_btn">نص الزر</label>
+            <input type="text" id="f_btn" placeholder="زيارة الموقع">
+          </div>
+        </div>
+
+        <div class="grid2">
+          <div class="field">
+            <label for="f_glyph">الكلمة الزخرفية في المربع الجانبي</label>
+            <input type="text" id="f_glyph" placeholder="تدشين">
+          </div>
+          <div class="field">
+            <label for="f_num">ترقيم يدوي (اختياري)</label>
+            <input type="text" id="f_num" placeholder="متروك = يُحسب تلقائيًا">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="f_caption">سطر تحت الكلمة الزخرفية</label>
+          <textarea id="f_caption" placeholder="لحظة الإطلاق&#10;على شاشتين في وقتٍ واحد"></textarea>
+        </div>
+
+        <div class="grid2">
+          <div class="field">
+            <label for="f_xlabel">رابط إضافي — النص (اختياري)</label>
+            <input type="text" id="f_xlabel" placeholder="إنستغرام المتجر">
+          </div>
+          <div class="field">
+            <label for="f_xurl">رابط إضافي — العنوان (اختياري)</label>
+            <input type="url" id="f_xurl" placeholder="https://instagram.com/...">
+          </div>
+        </div>
+
+        <div class="bar">
+          <button class="b gold" id="saveBtn">💾 حفظ المسودة</button>
+          <button class="b" id="dlBtn">⬇ تنزيل works.js</button>
+          <button class="b" id="copyBtn">📋 نسخ JSON</button>
+          <button class="b danger" id="resetBtn">↺ استعادة الأصل</button>
+        </div>
+      </div>
+
+      <div class="prevwrap">
+        <div class="prevhead">معاينة حيّة للبطاقة كما ستظهر في الموقع ↓</div>
+        <div class="works" id="preview"></div>
+      </div>
+
+      <div class="prevwrap">
+        <div class="prevhead">كل الأعمال بالترتيب الحالي ↓</div>
+        <div class="works" id="previewAll"></div>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<div id="toast"></div>
+
+<script src="assets/site.js"></script>
+<script src="assets/works.js"></script>
+<script>
+const KEY = 'alfarooq_portfolio_draft_v1';
+const ORIGINAL = JSON.parse(JSON.stringify(window.PORTFOLIO.works || []));
+
+function draft() {
+  try { const d = localStorage.getItem(KEY); return d ? JSON.parse(d) : null; } catch (e) { return null; }
+}
+function blank() {
+  return { title: 'عمل جديد', tagline: 'وصف مختصر يظهر تحت الاسم', desc: 'اكتب الوصف التفصيلي هنا…', chips: [], url: 'https://', btn: 'زيارة الموقع', glyph: 'عمل', caption: 'سطر وصفي قصير' };
+}
+
+let works = draft() || JSON.parse(JSON.stringify(ORIGINAL));
+let sel = 0;
+
+const $ = id => document.getElementById(id);
+const F = {
+  title: $('f_title'), tagline: $('f_tagline'), desc: $('f_desc'), chips: $('f_chips'),
+  url: $('f_url'), btn: $('f_btn'), glyph: $('f_glyph'), num: $('f_num'),
+  caption: $('f_caption'), xlabel: $('f_xlabel'), xurl: $('f_xurl')
+};
+
+function toast(msg) {
+  const t = $('toast'); t.textContent = msg; t.classList.add('show');
+  clearTimeout(toast._i); toast._i = setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+function renderList() {
+  $('list').innerHTML = works.map((w, i) => `
+    <li data-i="${i}" class="${i === sel ? 'on' : ''}">
+      <span class="n">${i + 1}</span>
+      <span class="t">${esc(w.title || 'بدون اسم')}</span>
+      <button class="mini" data-act="up" title="تحريك لأعلى">▲</button>
+      <button class="mini" data-act="down" title="تحريك لأسفل">▼</button>
+      <button class="mini" data-act="dup" title="تكرار">⧉</button>
+      <button class="mini del" data-act="del" title="حذف">✕</button>
+    </li>`).join('');
+}
+
+function fillForm() {
+  const w = works[sel];
+  if (!w) return;
+  F.title.value = w.title || ''; F.tagline.value = w.tagline || ''; F.desc.value = w.desc || '';
+  F.chips.value = (w.chips || []).join('\n'); F.url.value = w.url || ''; F.btn.value = w.btn || '';
+  F.glyph.value = w.glyph || ''; F.num.value = w.num || ''; F.caption.value = w.caption || '';
+  F.xlabel.value = (w.extra && w.extra.label) || ''; F.xurl.value = (w.extra && w.extra.url) || '';
+  $('formTitle').textContent = 'تفاصيل العمل رقم ' + (sel + 1);
+}
+
+function readForm() {
+  const w = works[sel]; if (!w) return;
+  w.title = F.title.value.trim();
+  w.tagline = F.tagline.value.trim();
+  w.desc = F.desc.value.trim();
+  w.chips = F.chips.value.split(/[\n،,]+/).map(s => s.trim()).filter(Boolean);
+  w.url = F.url.value.trim();
+  w.btn = F.btn.value.trim() || 'زيارة الموقع';
+  w.glyph = F.glyph.value.trim();
+  w.num = F.num.value.trim();
+  w.caption = F.caption.value.trim();
+  if (F.xurl.value.trim()) w.extra = { label: F.xlabel.value.trim() || 'رابط إضافي', url: F.xurl.value.trim() };
+  else delete w.extra;
+}
+
+function renderPreview() {
+  readForm();
+  $('preview').innerHTML = works[sel] ? renderWork(works[sel], sel) : '<div class="empty">لا يوجد عمل محدد.</div>';
+  $('previewAll').innerHTML = works.length ? works.map(renderWork).join('') : '<div class="empty">لا توجد أعمال.</div>';
+  document.querySelectorAll('#preview .rv, #previewAll .rv').forEach(e => e.classList.add('in'));
+}
+
+function persist(silent) {
+  try { localStorage.setItem(KEY, JSON.stringify(works)); if (!silent) toast('✓ تم حفظ المسودة في هذا المتصفح'); }
+  catch (e) { toast('تعذّر الحفظ المحلي: ' + e.message); }
+}
+
+function fileText() {
+  return '/* بيانات الأعمال والمشاريع — عدّلها من صفحة admin.html ثم نزّل هذا الملف واستبدله في assets/ */\n'
+    + 'window.PORTFOLIO = ' + JSON.stringify({ works }, null, 2) + ';\n';
+}
+
+/* ===== أحداث ===== */
+$('list').addEventListener('click', e => {
+  const li = e.target.closest('li[data-i]'); if (!li) return;
+  const i = +li.dataset.i, act = e.target.dataset.act;
+  if (act === 'up' && i > 0) { [works[i - 1], works[i]] = [works[i], works[i - 1]]; sel = i - 1; }
+  else if (act === 'down' && i < works.length - 1) { [works[i + 1], works[i]] = [works[i], works[i + 1]]; sel = i + 1; }
+  else if (act === 'dup') { works.splice(i + 1, 0, JSON.parse(JSON.stringify(works[i]))); sel = i + 1; }
+  else if (act === 'del') {
+    if (!confirm('حذف العمل «' + (works[i].title || '') + '»؟')) return;
+    works.splice(i, 1); sel = Math.max(0, Math.min(sel, works.length - 1));
+  }
+  else sel = i;
+  persist(true); renderList(); fillForm(); renderPreview();
+});
+
+Object.values(F).forEach(el => el.addEventListener('input', () => { renderPreview(); persist(true); renderList(); }));
+
+$('addBtn').onclick = () => { works.push(blank()); sel = works.length - 1; persist(true); renderList(); fillForm(); renderPreview(); $('f_title').focus(); };
+
+$('saveBtn').onclick = () => { persist(); renderList(); };
+
+$('dlBtn').onclick = () => {
+  readForm();
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([fileText()], { type: 'text/javascript;charset=utf-8' }));
+  a.download = 'works.js'; a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+  toast('✓ تم تنزيل works.js — استبدله في مجلد assets');
+};
+
+$('copyBtn').onclick = async () => {
+  readForm();
+  try { await navigator.clipboard.writeText(fileText()); toast('✓ تم نسخ البيانات'); }
+  catch (e) { toast('تعذّر النسخ التلقائي — استخدم زر التنزيل'); }
+};
+
+$('resetBtn').onclick = () => {
+  if (!confirm('استعادة الأعمال الأصلية والتخلي عن كل تعديلاتك المحفوظة؟')) return;
+  works = JSON.parse(JSON.stringify(ORIGINAL)); sel = 0;
+  persist(true); renderList(); fillForm(); renderPreview(); toast('↺ تمت الاستعادة');
+};
+
+/* ===== بوابة الدخول ===== */
+const SES = 'alfarooq_admin_session_v1';
+const EH = '37d0e71904276ab5f281b4b9ac329e7da2b9fb52b429dd66a91a6cc254c94ea4'; // SHA-256 للبريد بعد التطبيع
+const PH = '46d5e4b23c775ee8839c20304525d76f547442f3ccb95744e12a5868784b2690'; // SHA-256 لكلمة المرور
+
+const sha256 = async s => {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+};
+const normEmail = s => s.normalize('NFKC').trim().toLowerCase();
+
+function unlock() {
+  $('gate').classList.add('gone');
+  startAdmin();
+}
+
+$('gateForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const err = $('gateErr');
+  err.classList.remove('show');
+  if (!window.crypto || !crypto.subtle) { err.textContent = 'متصفحك لا يدعم التحقق الآمن — جرّب متصفحًا آخر.'; err.classList.add('show'); return; }
+  const [em, pw] = await Promise.all([sha256(normEmail($('gEmail').value)), sha256($('gPass').value.trim())]);
+  if (em === EH && pw === PH) {
+    sessionStorage.setItem(SES, '1');
+    unlock();
+  } else {
+    err.textContent = 'البريد الإلكتروني أو كلمة المرور غير صحيحة.';
+    err.classList.add('show');
+    $('gPass').value = '';
+    $('gPass').focus();
+  }
+});
+
+$('logoutBtn').onclick = () => { sessionStorage.removeItem(SES); location.reload(); };
+
+function startAdmin() {
+  if (draft()) toast('✓ تم استرجاع مسودة محفوظة من قبل');
+  renderList(); fillForm(); renderPreview();
+}
+
+if (sessionStorage.getItem(SES) === '1') unlock(); else $('gEmail').focus();
+</script>
+</body>
+</html>
